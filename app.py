@@ -157,13 +157,13 @@ if user_menu == 'Athlete wise Analysis':
 
     st.title('Height Vs Weight')
 
-selected_sport = st.selectbox('Select a Sport', sport_list)
+    selected_sport = st.selectbox('Select a Sport', sport_list)
 
-temp_df = helper.weight_v_height(df, selected_sport)
+    temp_df = helper.weight_v_height(df, selected_sport)
 
-fig, ax = plt.subplots()
+    fig, ax = plt.subplots()
 
-sns.scatterplot(
+    sns.scatterplot(
     data=temp_df,
     x='Weight',
     y='Height',
@@ -171,12 +171,12 @@ sns.scatterplot(
     style='Sex',
     s=60,
     ax=ax
-)
+    )
 
-st.pyplot(fig)
+    st.pyplot(fig)
 
-st.title("Men Vs Women Participation Over the Years")
-final = helper.men_vs_women(df)
-fig = px.line(final, x="Year", y=["Male", "Female"])
-fig.update_layout(autosize=False, width=1000, height=600)
-st.plotly_chart(fig)
+    st.title("Men Vs Women Participation Over the Years")
+    final = helper.men_vs_women(df)
+    fig = px.line(final, x="Year", y=["Male", "Female"])
+    fig.update_layout(autosize=False, width=1000, height=600)
+    st.plotly_chart(fig)
