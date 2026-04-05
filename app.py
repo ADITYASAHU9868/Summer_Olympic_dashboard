@@ -101,22 +101,31 @@ if user_menu == 'Country-wise Analysis':
 
     st.sidebar.title('Country-wise Analysis')
 
+    # List of countries
     country_list = df['region'].dropna().unique().tolist()
     country_list.sort()
 
-    selected_country = st.sidebar.selectbox('Select a Country',country_list)
+    selected_country = st.sidebar.selectbox('Select a Country', country_list)
 
-    country_df = helper.yearwise_medal_tally(df,selected_country)
+    # Year-wise medal tally
+    country_df = helper.yearwise_medal_tally(df, selected_country)
     fig = px.line(country_df, x="Year", y="Medal")
-    st.title(selected_country + " Medal Tally over the years")
+    st.title(selected_country + " Medal Tally over the Years")
     st.plotly_chart(fig)
 
+    # Country excels in these sports
     st.title(selected_country + " excels in the following sports")
-    pt = helper.country_event_heatmap(df,selected_country)
-    fig, ax = plt.subplots(figsize=(20, 20))
-    ax = sns.heatmap(pt,annot=True)
-    st.pyplot(fig)
+    pt = helper.country_event_heatmap(df, selected_country)
 
+    # 🛡 Safe heatmap rendering
+    if pt.empty:
+        st.warning(f"No data available to generate heatmap for {selected_country}.")
+    else:
+        pt = pt.fillna(0)  # fill NaNs with 0
+        fig, ax = plt.subplots(figsize=(20, 20))
+        sns.heatmap(pt, annot=True, ax=ax)
+        st.pyplot(fig)
+        
 if user_menu == 'Athlete wise Analysis':
     athlete_df = df.drop_duplicates(subset=['Name', 'region'])
 
